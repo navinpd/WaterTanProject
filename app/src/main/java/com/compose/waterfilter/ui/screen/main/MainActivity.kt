@@ -8,6 +8,10 @@ import com.compose.waterfilter.PlaceHolderDependency
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+/**
+ * Address:
+ * https://www.youtube.com/playlist?list=PLeYPyxTMnOLW7O_AZWLWHgeMIMMBYOZLu
+ */
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
