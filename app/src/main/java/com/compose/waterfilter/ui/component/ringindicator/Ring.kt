@@ -31,7 +31,13 @@ private val bgStrokeDp: Dp = 8.dp
 private enum class TransitionState { INIT_START, INIT_END, FILLED }
 
 @Composable
-fun Ring(modifier: Modifier = Modifier, bgColor: Color, fgColor: Color, fill: Float) {
+fun Ring(
+    modifier: Modifier = Modifier,
+    bgColor: Color,
+    fgColor: Color,
+    fill: Float,
+    fgFillCb: ((Float) -> Unit)? = null
+) {
     var bgStroke: Stroke
     var fgStroke: Stroke
     with(LocalDensity.current) {
@@ -68,6 +74,17 @@ fun Ring(modifier: Modifier = Modifier, bgColor: Color, fgColor: Color, fill: Fl
     ) { currentState ->
         if (currentState == TransitionState.FILLED) 180.0f * fill else 0.0f
     }
+    val fgFill by transition.animateFloat(
+        transitionSpec = {
+            tween(durationMillis = 400)
+        },
+        label = "fgFill"
+    ) { currentState ->
+        if (currentState == TransitionState.INIT_START) 0f else 100 * fill
+    }
+    LaunchedEffect(fgFillCb) {
+        fgFillCb?.invoke(fgFill)
+    }
 
     val maxStroke = remember {
         max(bgStroke.width, fgStroke.width)
@@ -78,11 +95,7 @@ fun Ring(modifier: Modifier = Modifier, bgColor: Color, fgColor: Color, fill: Fl
             else -> TransitionState.FILLED
         }
     }
-    Canvas(
-        modifier
-            .fillMaxWidth()
-            .height(300.dp)
-    ) {
+    Canvas(modifier) {
         val innerRadius = (size.minDimension - maxStroke) / 2
         val halfSize = size / 2f
 

@@ -3,6 +3,7 @@ buildscript {
     ext {
         compose_version = '1.0.0'
         hilt_version = '2.37'
+        constraintlayout_compose = '1.0.0-beta02'
     }
     repositories {
         google()
